@@ -36,16 +36,19 @@ def fetch_emails(username, app_specific_password):
             # res, msg_data = mail.fetch(i, "(RFC822)")  
             res, msg_data = mail.fetch(i, "(BODY.PEEK[])")
 
-
             # RFC822(message format)-Retreives the full raw message 
-            # print(msg_data)
             if res != "OK":
                 print(f"Failed to fetch email ID: {i.decode()}")
                 continue
-            print(f"fetched message: {msg_data}")
+           
+            with open("email_format.eml", "wb") as file:
+                for response_part in msg_data:
+                    if isinstance(response_part, tuple):
+                        file.write(response_part[1])
+
 
             for response_part in msg_data:
-                print(response_part)
+                # print(response_part)
                 if isinstance(response_part, tuple):
                     msg = email.message_from_bytes(response_part[1])
 
@@ -56,7 +59,6 @@ def fetch_emails(username, app_specific_password):
                     subject, encoding = decode_header(msg["Subject"])[0]
                     if isinstance(subject, bytes):
                         subject = subject.decode(encoding if encoding else "utf-8")
-                    # print(f"Email Subject: {subject}")
 
                     print(f"Email From: {froms}")
                     print(f"Email Subject: {subject}")

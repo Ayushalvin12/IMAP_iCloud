@@ -1,4 +1,6 @@
 .env
+email_format.txt
+email_format.eml
 
 # Ignore Python bytecode files
 __pycache__/
@@ -7,5 +9,6 @@ __pycache__/
 
 # Ignore virtual environment folder
 myenv~
+venv
 env/
 pyvenv.cfg/
